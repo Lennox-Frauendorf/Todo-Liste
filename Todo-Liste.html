@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krasse Todo-Liste</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Reset für saubere Abstände */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            /* Schicker Hintergrund-Farbverlauf */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+
+            /* Zentriert den gesamten Inhalt in der Mitte des Bildschirms */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Die Haupt-Box der App */
+        .app-container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        header h2 {
+            text-align: center;
+            color: #111;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        /* Bereich für Input und Button nebeneinander */
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            /* Nimmt den restlichen Platz ein */
+            padding: 12px 16px;
+            font-size: 16px;
+            font-family: inherit;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #667eea;
+            color: #ffffff;
+            transition: all 0.25s ease;
+        }
+
+        button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(90, 103, 216, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Styling für die Todo-Liste */
+        ul {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        li {
+            background: #f8fafc;
+            padding: 14px 16px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #667eea;
+            font-size: 16px;
+
+            /* Coole Animation, wenn das Element auftaucht */
+            animation: slideIn 0.3s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Styling für den Löschen-Button */
+        .delete-btn {
+            background: #ff6b6b;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .delete-btn:hover {
+            background: #ee5253;
+            box-shadow: 0 4px 12px rgba(238, 82, 83, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: #667eea;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <header>
+            <h2>Todo-Liste</h2>
+        </header>
+
+        <div class="input-group">
+            <input type="text" id="todoField" placeholder="Was steht an?">
+            <button id="addBtn">Hinzufügen</button>
+        </div>
+
+        <ul id="myTodos">
+        </ul>
+
+        <footer>
+            <a href="https://www.youtube.com/@Programmierenlernen" target="_blank">Programmieren ist einfach, man muss
+                nur Wissen wo man anfängt.</a>
+        </footer>
+    </div>
+
+    <script>
+        const input = document.getElementById("todoField");
+        const list = document.getElementById("myTodos");
+        const addBtn = document.getElementById("addBtn");
+
+        // Diese Funktion erledigt die ganze Arbeit
+        function handleAddTodo() {
+            const text = input.value.trim();
+
+            if (text !== "") {
+                // Erstelle das Listen-Element
+                const li = document.createElement("li");
+                li.textContent = text;
+
+                // Erstelle den Löschen-Button
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "✖";
+                deleteBtn.classList.add("delete-btn");
+
+                // Funktion, um das Todo beim Klick zu löschen
+                deleteBtn.addEventListener("click", function () {
+                    li.remove();
+                });
+
+                // Setze alles zusammen
+                li.appendChild(deleteBtn);
+                list.appendChild(li);
+
+                // Feld leeren und Fokus zurücksetzen
+                input.value = "";
+                input.focus();
+            }
+        }
+
+        // Event-Listener für den Button-Klick
+        addBtn.addEventListener("click", handleAddTodo);
+
+        // Event-Listener für die Enter-Taste
+        input.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                handleAddTodo();
+            }
+        });
+    </script>
+
+</body>
+
+</html>
